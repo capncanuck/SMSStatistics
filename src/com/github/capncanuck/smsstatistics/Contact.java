@@ -75,27 +75,33 @@ public class Contact implements Comparable<Contact> {
 
     /**
      * Increments the count of incomings by one.
+     * @return the modified contact
      */
-    public void succIncomingCount() {
+    public Contact incrIncomingCount() {
         this.incoming++;
         this.total++;
+        return this;
     }
 
     /**
      * Increments the count of outgoings by one.
+     * @return the modified contact
      */
-    public void succOutgoingCount() {
+    public Contact incrOutgoingCount() {
         this.outgoing++;
         this.total++;
+        return this;
     }
 
     /**
      * Set the display name of the contact.
      * 
      * @param display_name the display name
+     * @return the modified contact
      */
-    public void setName(final String display_name) {
+    public Contact setName(final String display_name) {
         this.display_name = display_name;
+        return this;
     }
 
     /**

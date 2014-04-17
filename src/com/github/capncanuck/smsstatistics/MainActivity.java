@@ -1,7 +1,7 @@
 package com.github.capncanuck.smsstatistics;
 
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -44,18 +44,20 @@ public class MainActivity extends Activity {
 
         Query.setAty(this);
 
-        // Initialze the contact list with information from the inbox
+        // Initialize the contact list with information from the inbox
         final Set<Contact> contacts = new Query<Set<Contact>>(Uri.withAppendedPath(smsUri, "inbox"), "address") {
             @Override
             protected Set<Contact> ready(final Cursor cursor) {
-                final Set<Contact> contacts = new TreeSet<Contact>();
+                final Set<Contact> contacts = new ConcurrentSkipListSet<Contact>();
 
                 while (cursor.moveToNext()) {
                     final PhoneNumber number = new PhoneNumber(cursor.getString(0));
                     final Optional<Contact> maybeContact = Iterables.tryFind(contacts, Contact.checkNumber(number));
 
                     if (maybeContact.isPresent()) {
-                        maybeContact.get().succIncomingCount();
+                        final Contact contact = maybeContact.get();
+                        contacts.remove(contact);
+                        contacts.add(contact.incrIncomingCount());
                     } else {
                         contacts.add(new Contact(number, 1, 0));
                     }
@@ -74,7 +76,9 @@ public class MainActivity extends Activity {
                     final Optional<Contact> maybeContact = Iterables.tryFind(contacts, Contact.checkNumber(number));
 
                     if (maybeContact.isPresent()) {
-                        maybeContact.get().succOutgoingCount();
+                        final Contact contact = maybeContact.get();
+                        contacts.remove(contact);
+                        contacts.add(contact.incrOutgoingCount());
                     } else {
                         contacts.add(new Contact(number, 0, 1));
                     }
@@ -89,12 +93,13 @@ public class MainActivity extends Activity {
             new Query<Void>(Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(contact.getRawNumber())), Contacts.DISPLAY_NAME) {
                 @Override
                 protected Void ready(final Cursor cursor) {
-                    contact.setName(cursor.moveToNext() ? cursor.getString(0) : null);
+                    contacts.remove(contact);
+                    contacts.add(contact.setName(cursor.moveToNext() ? cursor.getString(0) : null));
                     return null;
                 }
             }.result();
         }
 
-        content.setText(TextUtils.join(NL, new TreeSet<Contact>(contacts)));
+        content.setText(TextUtils.join(NL, contacts));
     }
 }
