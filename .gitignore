@@ -57,3 +57,6 @@ tmp/
 
 # TeXlipse plugin
 .texlipse
+
+# private files
+private
