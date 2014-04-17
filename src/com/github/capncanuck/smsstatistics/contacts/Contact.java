@@ -1,9 +1,10 @@
-package com.github.capncanuck.smsstatistics;
+package com.github.capncanuck.smsstatistics.contacts;
 
 import java.util.Locale;
 
 import android.net.Uri;
 
+import com.github.capncanuck.smsstatistics.PhoneNumber;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;

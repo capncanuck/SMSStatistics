@@ -13,6 +13,9 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.capncanuck.smsstatistics.contacts.Contact;
+import com.github.capncanuck.smsstatistics.contacts.ContactList;
+import com.github.capncanuck.smsstatistics.contacts.ContactsData;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;

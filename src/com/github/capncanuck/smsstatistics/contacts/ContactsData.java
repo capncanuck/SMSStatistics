@@ -1,4 +1,4 @@
-package com.github.capncanuck.smsstatistics;
+package com.github.capncanuck.smsstatistics.contacts;
 
 import java.util.List;
 
