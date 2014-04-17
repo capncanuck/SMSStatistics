@@ -22,11 +22,6 @@ public class ContactsData {
     private final List<Contact> contacts;
 
     /**
-     * The total number of messages.
-     */
-    private final int total;
-
-    /**
      * The total number of incoming messages.
      */
     private final int totalIncoming;
@@ -49,7 +44,6 @@ public class ContactsData {
             totalOutgoing += contact.getOutgoing();
         }
 
-        this.total = total;
         this.totalIncoming = totalIncoming;
         this.totalOutgoing = totalOutgoing;
 
@@ -64,17 +58,6 @@ public class ContactsData {
                 contact.setBarScale(greatest);
             }
         }
-    }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return Objects.toStringHelper(this)
-                .add("total", this.total)
-                .add("list", TextUtils.join(NL, this.contacts))
-                .toString();
     }
 
     /**
@@ -96,5 +79,17 @@ public class ContactsData {
      */
     public int getTotalOutgoing() {
         return this.totalOutgoing;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("total_incoming", this.totalIncoming)
+                .add("total_outgoing", this.totalOutgoing)
+                .add("list", TextUtils.join(NL, this.contacts))
+                .toString();
     }
 }
