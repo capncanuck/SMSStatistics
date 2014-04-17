@@ -1,9 +1,10 @@
 package com.github.capncanuck.smsstatistics;
 
+import java.util.List;
+
 import android.text.TextUtils;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * the immutable contact list including furthur statistics.
@@ -16,30 +17,52 @@ public class ContactList {
     private static final CharSequence NL = System.getProperty("line.separator");
 
     /**
-     * The immutable contact list.
+     * The contact list.
      */
-    private final ImmutableSet<Contact> frozenContacts;
+    private final List<Contact> contacts;
 
     /**
-     * The total number of messages
+     * The total number of messages.
      */
     private final int total;
 
     /**
-     * @param frozenContacts the immutable contact list
+     * The total number of incoming messages.
      */
-    public ContactList(final ImmutableSet<Contact> frozenContacts) {
-        this.frozenContacts = frozenContacts;
-        int total = 0;
+    private final int totalIncoming;
 
-        for (final Contact contact : frozenContacts) {
+    /**
+     * The total number of outgoing messages.
+     */
+    private final int totalOutgoing;
+
+    /**
+     * @param contacts the contact list
+     */
+    public ContactList(final List<Contact> contacts) {
+        this.contacts = contacts;
+        int total = 0, totalIncoming = 0, totalOutgoing = 0;
+
+        for (final Contact contact : contacts) {
             total += contact.getTotal();
+            totalIncoming += contact.getIncoming();
+            totalOutgoing += contact.getOutgoing();
         }
 
         this.total = total;
+        this.totalIncoming = totalIncoming;
+        this.totalOutgoing = totalOutgoing;
 
-        for (final Contact contact : frozenContacts) {
+        for (final Contact contact : contacts) {
             contact.setPercentage(total);
+        }
+
+        if (contacts.size() > 0) {
+            final int greatest = contacts.get(0).getTotal();
+
+            for (final Contact contact : contacts) {
+                contact.setBarScale(greatest);
+            }
         }
     }
 
@@ -50,7 +73,28 @@ public class ContactList {
     public String toString() {
         return Objects.toStringHelper(this)
                 .add("total", this.total)
-                .add("list", TextUtils.join(NL, this.frozenContacts))
+                .add("list", TextUtils.join(NL, this.contacts))
                 .toString();
+    }
+
+    /**
+     * @return the contact list
+     */
+    public List<Contact> getList() {
+        return this.contacts;
+    }
+
+    /**
+     * @return the totalIncoming
+     */
+    public int getTotalIncoming() {
+        return this.totalIncoming;
+    }
+
+    /**
+     * @return the totalOutgoing
+     */
+    public int getTotalOutgoing() {
+        return this.totalOutgoing;
     }
 }

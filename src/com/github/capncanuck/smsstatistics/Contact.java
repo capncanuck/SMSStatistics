@@ -85,6 +85,11 @@ public class Contact implements Comparable<Contact> {
     private Uri photo;
 
     /**
+     * The scale of the bar
+     */
+    private double barScale;
+
+    /**
      * Instantiates a new contact.
      *
      * @param number the phone number
@@ -190,6 +195,16 @@ public class Contact implements Comparable<Contact> {
                 .add("incoming", this.incoming)
                 .add("outgoing", this.outgoing)
                 .add("percentage", String.format(Locale.CANADA, "%2.1f%%", this.percentage))
-                .add("photo", this.photo).toString();
+                .add("photo", this.photo)
+                .add("bar_scale", this.barScale).toString();
+    }
+
+    /**
+     * Scale the bar length by the the greatest bar length
+     * 
+     * @param greatest the greatest bar length
+     */
+    public void setBarScale(final int greatest) {
+        this.barScale = (double) this.total / greatest;
     }
 }

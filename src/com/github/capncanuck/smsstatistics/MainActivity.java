@@ -9,11 +9,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
+import android.widget.ListView;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
 /**
@@ -104,7 +105,7 @@ public class MainActivity extends Activity {
             }.result();
         }
 
-        final ContactList list = new ContactList(ImmutableSet.copyOf(contacts));
+        final ContactList list = new ContactList(ImmutableList.copyOf(contacts));
 
         content.setText(list.toString());
     }
