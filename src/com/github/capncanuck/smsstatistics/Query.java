@@ -81,18 +81,34 @@ public abstract class Query<Result> {
     private static final String TAG = "com.github.capncanuck.smsstatistics.Query";
 
     /**
+     * The activity that must terminate on an invalid uri
+     */
+    private static Activity aty;
+
+    /**
+     * The content resolver
+     */
+    private static ContentResolver resolver;
+
+    /**
+     * @param aty the activity all queries will run in
+     */
+    public static void setAty(final Activity aty) {
+        Query.aty = aty;
+        Query.resolver = aty.getContentResolver();
+    }
+
+    /**
      * The result.
      */
     private Result result;
 
     /**
-     * @param atv the activity from where the content resolver is
      * @param uri the uri to query from
      * @param projection A list of which columns to return. Passing null will
      *         return all columns, which is inefficient.
      */
-    public Query(final Activity atv, final Uri uri, final String... projection) {
-        final ContentResolver resolver = atv.getContentResolver();
+    public Query(final Uri uri, final String... projection) {
         Cursor cursor = null;
 
         try {
@@ -100,9 +116,8 @@ public abstract class Query<Result> {
 
             if (cursor == null) {
                 Log.e(TAG, "Invalid URI: " + uri.toString());
-                atv.finish();
+                aty.finish();
             } else {
-                cursor.moveToFirst();
                 this.result = this.ready(cursor);
             }
         } finally {
