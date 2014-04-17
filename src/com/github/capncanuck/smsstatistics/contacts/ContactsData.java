@@ -5,7 +5,6 @@ import java.util.List;
 import android.text.TextUtils;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * the immutable contact list including furthur statistics.
@@ -18,9 +17,9 @@ public class ContactsData {
     private static final CharSequence NL = System.getProperty("line.separator");
 
     /**
-     * The immutable contact list.
+     * The contact list.
      */
-    private final ImmutableSet<Contact> frozenContacts;
+    private final List<Contact> contacts;
 
     /**
      * The total number of messages.
@@ -38,13 +37,13 @@ public class ContactsData {
     private final int totalOutgoing;
 
     /**
-     * @param frozenContacts the immutable contact list
+     * @param contacts the contact list
      */
-    public ContactsData(final ImmutableSet<Contact> frozenContacts) {
-        this.frozenContacts = frozenContacts;
+    public ContactsData(final List<Contact> contacts) {
+        this.contacts = contacts;
         int total = 0, totalIncoming = 0, totalOutgoing = 0;
 
-        for (final Contact contact : frozenContacts) {
+        for (final Contact contact : contacts) {
             total += contact.getTotal();
             totalIncoming += contact.getIncoming();
             totalOutgoing += contact.getOutgoing();
@@ -54,8 +53,16 @@ public class ContactsData {
         this.totalIncoming = totalIncoming;
         this.totalOutgoing = totalOutgoing;
 
-        for (final Contact contact : frozenContacts) {
+        for (final Contact contact : contacts) {
             contact.setPercentage(total);
+        }
+
+        if (contacts.size() > 0) {
+            final int greatest = contacts.get(0).getTotal();
+
+            for (final Contact contact : contacts) {
+                contact.setBarScale(greatest);
+            }
         }
     }
 
@@ -66,7 +73,7 @@ public class ContactsData {
     public String toString() {
         return Objects.toStringHelper(this)
                 .add("total", this.total)
-                .add("list", TextUtils.join(NL, this.frozenContacts))
+                .add("list", TextUtils.join(NL, this.contacts))
                 .toString();
     }
 
@@ -74,7 +81,7 @@ public class ContactsData {
      * @return the contact list
      */
     public List<Contact> getList() {
-        return this.frozenContacts.asList();
+        return this.contacts;
     }
 
     /**

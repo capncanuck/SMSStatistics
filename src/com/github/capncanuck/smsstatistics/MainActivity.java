@@ -17,7 +17,7 @@ import com.github.capncanuck.smsstatistics.contacts.Contact;
 import com.github.capncanuck.smsstatistics.contacts.ContactList;
 import com.github.capncanuck.smsstatistics.contacts.ContactsData;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
 /**
@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
             }.result();
         }
 
-        final ContactsData data = new ContactsData(ImmutableSet.copyOf(contacts));
+        final ContactsData data = new ContactsData(ImmutableList.copyOf(contacts));
 
         // set-up total infobar
         final TextView total = (TextView) this.findViewById(R.id.total);
