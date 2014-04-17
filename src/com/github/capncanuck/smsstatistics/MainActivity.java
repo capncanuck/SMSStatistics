@@ -1,5 +1,6 @@
 package com.github.capncanuck.smsstatistics;
 
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -9,7 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
-import android.text.method.ScrollingMovementMethod;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.common.base.Optional;
@@ -33,9 +34,6 @@ public class MainActivity extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
-
-        final TextView content = (TextView) this.findViewById(R.id.content);
-        content.setMovementMethod(new ScrollingMovementMethod());
 
         Query.setAty(this);
 
@@ -104,8 +102,15 @@ public class MainActivity extends Activity {
             }.result();
         }
 
-        final ContactList list = new ContactList(ImmutableSet.copyOf(contacts));
+        final ContactsData data = new ContactsData(ImmutableSet.copyOf(contacts));
 
-        content.setText(list.toString());
+        // set-up total infobar
+        final TextView total = (TextView) this.findViewById(R.id.total);
+        final String format = this.getResources().getString(R.string.total);
+        total.setText(String.format(Locale.CANADA, format, data.getTotalIncoming(), data.getTotalOutgoing()));
+
+        // set-up list view
+        final ListView contactsView = (ListView) this.findViewById(R.id.contacts);
+        contactsView.setAdapter(new ContactList(this, data.getList()));
     }
 }

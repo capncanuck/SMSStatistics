@@ -1,56 +1,73 @@
 package com.github.capncanuck.smsstatistics;
 
-import android.text.TextUtils;
+import java.util.List;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableSet;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.res.Resources;
+import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
 /**
- * the immutable contact list including furthur statistics.
+ * Draws out the contact list
  */
-public class ContactList {
+public class ContactList extends ArrayAdapter<Contact> {
 
     /**
-     * newline
+     * Where the contact list will be displayed
      */
-    private static final CharSequence NL = System.getProperty("line.separator");
+    private static final int layout = R.layout.contact_row;
 
     /**
-     * The immutable contact list.
+     * Used to inflate the layout.
      */
-    private final ImmutableSet<Contact> frozenContacts;
+    private final LayoutInflater inflator;
 
     /**
-     * The total number of messages
+     * The list of contacts.
      */
-    private final int total;
+    private final List<Contact> contacts;
 
     /**
-     * @param frozenContacts the immutable contact list
+     * The content resolver.
      */
-    public ContactList(final ImmutableSet<Contact> frozenContacts) {
-        this.frozenContacts = frozenContacts;
-        int total = 0;
+    private final ContentResolver resolver;
 
-        for (final Contact contact : frozenContacts) {
-            total += contact.getTotal();
-        }
+    /**
+     * The context's resources.
+     */
+    private final Resources resources;
 
-        this.total = total;
-
-        for (final Contact contact : frozenContacts) {
-            contact.setPercentage(total);
-        }
+    /**
+     * @param ctx The current context.
+     * @param contacts The objects to represent in the ListView.
+     */
+    public ContactList(final Context ctx, final List<Contact> contacts) {
+        super(ctx, layout, contacts);
+        this.inflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.resolver = ctx.getContentResolver();
+        this.resources = ctx.getResources();
+        this.contacts = contacts;
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
      */
     @Override
-    public String toString() {
-        return Objects.toStringHelper(this)
-                .add("total", this.total)
-                .add("list", TextUtils.join(NL, this.frozenContacts))
-                .toString();
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
+        final View rowView = this.inflator.inflate(layout, parent, false);
+        final Contact contact = this.contacts.get(position);
+        final Uri photoUri = contact.getPhoto();
+
+        if (photoUri != null) {
+            final ImageView photoView = (ImageView) rowView.findViewById(R.id.photo);
+            photoView.setImageURI(photoUri);
+        }
+
+        return rowView;
     }
 }

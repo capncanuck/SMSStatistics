@@ -2,5 +2,8 @@
 <resources>
 
     <string name="app_name">SMS Statistics</string>
-
+    <string name="total_blank">TOTAL: INCOMING, OUTGOING MESSAGES</string>
+    <string name="total">TOTAL: %1$d INCOMING, %2$d OUTGOING MESSAGES</string>
+    <string name="blank_photo">blank photo</string>
+    
 </resources>
