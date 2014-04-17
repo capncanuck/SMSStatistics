@@ -1,14 +1,29 @@
 package com.github.capncanuck.smsstatistics;
 
+import java.util.Locale;
+
+import android.net.Uri;
+
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
 /**
- * An SMS Contact.<br>
+ * <h1>An SMS Contact.</h1>
  * 
- * Includes this name, the phone number, and the number of incoming and outgoing texts
+ * Includes this name, the phone number, and the number of incoming and outgoing texts.<br>
+ * 
+ * <h1>TODO possible statistics:</h1>
+ * <ul>
+ *     <li>a list of incoming send dates</li>
+ *     <li>a list of incoming receive dates</li>
+ *     <li>a list of outgoing send dates</li>
+ *     <li>a list of incoming lag times</li>
+ *     <li>the average and sample standard deviation of incoming lag times</li>
+ * </ul>
+ * <h1>TODO Use the datetime stamp to implement the filter range feature</h1>
  */
 public class Contact implements Comparable<Contact> {
 
@@ -60,6 +75,16 @@ public class Contact implements Comparable<Contact> {
     private Integer total;
 
     /**
+     * The percentage of messages that used this contact.
+     */
+    private double percentage;
+
+    /**
+     * The uri to the contact's photo
+     */
+    private Uri photo;
+
+    /**
      * Instantiates a new contact.
      *
      * @param number the phone number
@@ -75,33 +100,50 @@ public class Contact implements Comparable<Contact> {
 
     /**
      * Increments the count of incomings by one.
-     * @return the modified contact
      */
-    public Contact incrIncomingCount() {
+    public void incrIncomingCount() {
         this.incoming++;
         this.total++;
-        return this;
     }
 
     /**
      * Increments the count of outgoings by one.
-     * @return the modified contact
      */
-    public Contact incrOutgoingCount() {
+    public void incrOutgoingCount() {
         this.outgoing++;
         this.total++;
-        return this;
     }
 
     /**
      * Set the display name of the contact.
      * 
      * @param display_name the display name
-     * @return the modified contact
      */
-    public Contact setName(final String display_name) {
+    public void setName(final String display_name) {
         this.display_name = display_name;
-        return this;
+    }
+
+    /**
+     * @param population the total number of messages
+     */
+    public void setPercentage(final int population) {
+        this.percentage = 100.0 * this.total / population;
+    }
+
+    /**
+     * @param photo the uri to the contact's photo
+     */
+    public void setPhoto(final Optional<String> photo) {
+        if (photo.isPresent()) {
+            this.photo = Uri.parse(photo.get());
+        }
+    }
+
+    /**
+     * @return this contact's photo
+     */
+    public Uri getPhoto() {
+        return this.photo;
     }
 
     /**
@@ -109,6 +151,13 @@ public class Contact implements Comparable<Contact> {
      */
     public String getRawNumber() {
         return this.number.toRaw();
+    }
+
+    /**
+     * @return the total
+     */
+    public int getTotal() {
+        return this.total;
     }
 
     /**
@@ -139,6 +188,8 @@ public class Contact implements Comparable<Contact> {
                 .add("display_name", this.display_name == null ? UNKNOWN : this.display_name)
                 .add("phone_number", this.number)
                 .add("incoming", this.incoming)
-                .add("outgoing", this.outgoing).toString();
+                .add("outgoing", this.outgoing)
+                .add("percentage", String.format(Locale.CANADA, "%2.1f%%", this.percentage))
+                .add("photo", this.photo).toString();
     }
 }

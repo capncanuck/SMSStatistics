@@ -9,11 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
-import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 
 /**
@@ -25,11 +25,6 @@ public class MainActivity extends Activity {
      * The url used to find SMS messages.
      */
     private static final Uri smsUri = Uri.parse("content://sms");
-
-    /**
-     * newline
-     */
-    private static final CharSequence NL = System.getProperty("line.separator");
 
     /**
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -57,7 +52,8 @@ public class MainActivity extends Activity {
                     if (maybeContact.isPresent()) {
                         final Contact contact = maybeContact.get();
                         contacts.remove(contact);
-                        contacts.add(contact.incrIncomingCount());
+                        contact.incrIncomingCount();
+                        contacts.add(contact);
                     } else {
                         contacts.add(new Contact(number, 1, 0));
                     }
@@ -78,7 +74,8 @@ public class MainActivity extends Activity {
                     if (maybeContact.isPresent()) {
                         final Contact contact = maybeContact.get();
                         contacts.remove(contact);
-                        contacts.add(contact.incrOutgoingCount());
+                        contact.incrOutgoingCount();
+                        contacts.add(contact);
                     } else {
                         contacts.add(new Contact(number, 0, 1));
                     }
@@ -90,16 +87,25 @@ public class MainActivity extends Activity {
 
         // Update the contact list with display names
         for (final Contact contact : contacts) {
-            new Query<Void>(Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(contact.getRawNumber())), Contacts.DISPLAY_NAME) {
+            new Query<Void>(Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(contact.getRawNumber())),
+                    Contacts.DISPLAY_NAME,
+                    Contacts.PHOTO_URI) {
                 @Override
                 protected Void ready(final Cursor cursor) {
-                    contacts.remove(contact);
-                    contacts.add(contact.setName(cursor.moveToNext() ? cursor.getString(0) : null));
+                    if (cursor.moveToNext()) {
+                        contacts.remove(contact);
+                        contact.setName(cursor.getString(0));
+                        contact.setPhoto(Optional.fromNullable(cursor.getString(1)));
+                        contacts.add(contact);
+                    }
+
                     return null;
                 }
             }.result();
         }
 
-        content.setText(TextUtils.join(NL, contacts));
+        final ContactList list = new ContactList(ImmutableSet.copyOf(contacts));
+
+        content.setText(list.toString());
     }
 }

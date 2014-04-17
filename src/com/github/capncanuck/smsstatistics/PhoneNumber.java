@@ -111,7 +111,7 @@ public class PhoneNumber implements Comparable<PhoneNumber> {
      */
     @Override
     public int hashCode() {
-        return this.formatted.hashCode();
+        return this.raw.hashCode();
     }
 
     /**
