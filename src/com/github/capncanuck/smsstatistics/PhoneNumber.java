@@ -8,12 +8,12 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
 /**
- * @author Khalil Fazal
+ * The phone number.
  */
 public class PhoneNumber implements Comparable<PhoneNumber> {
 
     /**
-     * Reverses a string
+     * Reverses a string.
      * 
      * @param str the string
      * @return the string's reverse
@@ -33,12 +33,12 @@ public class PhoneNumber implements Comparable<PhoneNumber> {
     private final String formatted;
 
     /**
-     * the country code
+     * The country code.
      */
     private final String country_code;
 
     /**
-     * the area code, exchange and sln
+     * The area code, exchange and sln (subscriber line number).
      */
     private final String body;
 
@@ -75,9 +75,11 @@ public class PhoneNumber implements Comparable<PhoneNumber> {
     }
 
     /**
-     * Sorting Phone numbers by:
-     *     1. non trivial country codes
-     *     2. lexical ordering of area code, exchange and sln concatenated
+     * Sorting Phone numbers by:<br>
+     * <ol>
+     *     <li>non trivial country codes</li>
+     *     <li>lexical ordering of area code, exchange and sln concatenated</li>
+     * </ol>
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */

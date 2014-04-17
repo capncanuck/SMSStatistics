@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
 
         Query.setAty(this);
 
-        // Initialze the set of contacts with the phone numbers of incoming texts
+        // Initialze the contact list with information from the inbox
         final Set<Contact> contacts = new Query<Set<Contact>>(Uri.withAppendedPath(smsUri, "inbox"), "address") {
             @Override
             protected Set<Contact> ready(final Cursor cursor) {
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
             }
         }.result();
 
-        // Update the contacts with the phone numbers of outgoing texts
+        // Update the contact list with information from the sent box
         new Query<Void>(Uri.withAppendedPath(smsUri, "sent"), "address") {
             @Override
             protected Void ready(final Cursor cursor) {
@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
             }
         }.result();
 
-        // Update the contacts with their display names
+        // Update the contact list with display names
         for (final Contact contact : contacts) {
             new Query<Void>(Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(contact.getRawNumber())), Contacts.DISPLAY_NAME) {
                 @Override

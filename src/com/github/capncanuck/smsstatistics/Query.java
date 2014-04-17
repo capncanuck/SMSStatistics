@@ -7,69 +7,81 @@ import android.net.Uri;
 import android.util.Log;
 
 /**
- * Doesnt Work:
- *     * content://sms/all
+ * <h1>Doesnt Work:</h1>
+ * <ul>
+ *     <li>content://sms/all</li>
+ * </ul>
  *
- * Works:
- *     * content://sms/inbox
- *         - _id
- *         - thread_id
- *         - address
- *         - person
- *         - date
- *         - date_sent
- *         - protocol
- *         - read
- *         - status
- *         - type
- *         - reply_path_present
- *         - subject
- *         - body
- *         - service_center
- *         - locked
- *         - error_code
- *         - seen
- *     * content://sms/sent
- *         - _id
- *         - thread_id
- *         - address
- *         - person
- *         - date
- *         - date_sent
- *         - protocol
- *         - read
- *         - status
- *         - type
- *         - reply_path_present
- *         - subject
- *         - body
- *         - service_center
- *         - locked
- *         - error_code
- *         - seen
- *    * content://sms/conversations
- *         - thread_id
- *         - msg_count
- *         - snippet
- *    * content://com.android.contacts/phone_lookup/#
- *         - times_contacted
- *         - custom_ringtone
- *         - has_phone_number
- *         - label
- *         - number
- *         - type
- *         - lookup               An opaque value that contains hints on how to find the contact if its row id changed as a result of a sync or aggregation.
- *         - last_time_contacted
- *         - display_name
- *         - in_visible_group
- *         - _id
- *         - starred
- *         - photo_uri
- *         - normalized_number
- *         - custom_vibration
- *         - photo_thumb_uri
- *         - photo_id
- *         - send_to_voicemail
+ * <h1>Works:</h1>
+ * <ul>
+ *     <li>content://sms/inbox</li>
+ *     <ul>
+ *         <li>_id</li>
+ *         <li>thread_id</li>
+ *         <li>address</li>
+ *         <li>person</li>
+ *         <li>date</li>
+ *         <li>date_sent</li>
+ *         <li>protocol</li>
+ *         <li>read</li>
+ *         <li>status</li>
+ *         <li>type</li>
+ *         <li>reply_path_present</li>
+ *         <li>subject</li>
+ *         <li>body</li>
+ *         <li>service_center</li>
+ *         <li>locked</li>
+ *         <li>error_code</li>
+ *         <li>seen</li>
+ *     </ul>
+ *     <li>content://sms/sent</li>
+ *     <ul>
+ *         <li>_id</li>
+ *         <li>thread_id</li>
+ *         <li>address</li>
+ *         <li>person</li>
+ *         <li>date</li>
+ *         <li>date_sent</li>
+ *         <li>protocol</li>
+ *         <li>read</li>
+ *         <li>status</li>
+ *         <li>type</li>
+ *         <li>reply_path_present</li>
+ *         <li>subject</li>
+ *         <li>body</li>
+ *         <li>service_center</li>
+ *         <li>locked</li>
+ *         <li>error_code</li>
+ *         <li>seen</li>
+ *    </ul>
+ *    <li>content://sms/conversations</li>
+ *    <ul>
+ *         <li>thread_id</li>
+ *         <li>msg_count</li>
+ *         <li>snippet</li>
+ *    </ul>
+ *    <li>content://com.android.contacts/phone_lookup/#</li>
+ *    <ul>
+ *         <li>times_contacted</li>
+ *         <li>custom_ringtone</li>
+ *         <li>has_phone_number</li>
+ *         <li>label</li>
+ *         <li>number</li>
+ *         <li>type</li>
+ *         <li>lookup An opaque value that contains hints on how to find the contact if its row id changed as a result of a sync or aggregation.</li>
+ *         <li>last_time_contacted</li>
+ *         <li>display_name</li>
+ *         <li>in_visible_group</li>
+ *         <li>_id</li>
+ *         <li>starred</li>
+ *         <li>photo_uri</li>
+ *         <li>normalized_number</li>
+ *         <li>custom_vibration</li>
+ *         <li>photo_thumb_uri</li>
+ *         <li>photo_id</li>
+ *         <li>send_to_voicemail</li>
+ *     </ul>
+ * </ul>
  *
  * @param <Result> the type of the result of the query
  */
