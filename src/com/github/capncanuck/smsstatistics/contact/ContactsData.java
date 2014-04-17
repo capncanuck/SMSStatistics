@@ -1,4 +1,4 @@
-package com.github.capncanuck.smsstatistics;
+package com.github.capncanuck.smsstatistics.contact;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.google.common.base.Objects;
 /**
  * the immutable contact list including furthur statistics.
  */
-public class ContactList {
+public class ContactsData {
 
     /**
      * newline
@@ -39,7 +39,7 @@ public class ContactList {
     /**
      * @param contacts the contact list
      */
-    public ContactList(final List<Contact> contacts) {
+    public ContactsData(final List<Contact> contacts) {
         this.contacts = contacts;
         int total = 0, totalIncoming = 0, totalOutgoing = 0;
 

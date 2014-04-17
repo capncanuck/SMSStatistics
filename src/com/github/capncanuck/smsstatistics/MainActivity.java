@@ -12,6 +12,8 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
+import com.github.capncanuck.smsstatistics.contact.Contact;
+import com.github.capncanuck.smsstatistics.contact.ContactsData;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -104,7 +106,7 @@ public class MainActivity extends Activity {
             }.result();
         }
 
-        final ContactList list = new ContactList(ImmutableList.copyOf(contacts));
+        final ContactsData list = new ContactsData(ImmutableList.copyOf(contacts));
 
         content.setText(list.toString());
     }
