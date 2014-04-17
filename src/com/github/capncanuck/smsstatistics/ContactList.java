@@ -2,9 +2,7 @@ package com.github.capncanuck.smsstatistics;
 
 import java.util.List;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,24 +31,12 @@ public class ContactList extends ArrayAdapter<Contact> {
     private final List<Contact> contacts;
 
     /**
-     * The content resolver.
-     */
-    private final ContentResolver resolver;
-
-    /**
-     * The context's resources.
-     */
-    private final Resources resources;
-
-    /**
      * @param ctx The current context.
      * @param contacts The objects to represent in the ListView.
      */
     public ContactList(final Context ctx, final List<Contact> contacts) {
         super(ctx, layout, contacts);
         this.inflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.resolver = ctx.getContentResolver();
-        this.resources = ctx.getResources();
         this.contacts = contacts;
     }
 
