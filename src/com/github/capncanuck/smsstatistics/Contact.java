@@ -166,6 +166,20 @@ public class Contact implements Comparable<Contact> {
     }
 
     /**
+     * @return the total number of incoming messages
+     */
+    public int getIncoming() {
+        return this.incoming;
+    }
+
+    /**
+     * @return the total number of outgoing messages
+     */
+    public int getOutgoing() {
+        return this.outgoing;
+    }
+
+    /**
      * Sorting Contacts by:<br>
      * <ol>
      *     <li>total incoming and outgoing (greatest to least)</li>

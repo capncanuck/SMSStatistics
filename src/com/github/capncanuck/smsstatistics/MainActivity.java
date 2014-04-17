@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
-import android.widget.ListView;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
