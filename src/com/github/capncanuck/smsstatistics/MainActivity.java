@@ -47,9 +47,10 @@ public class MainActivity extends Activity {
             @Override
             protected Set<Contact> ready(final Cursor cursor) {
                 final Set<Contact> contacts = new ConcurrentSkipListSet<Contact>();
+                final int address_index = cursor.getColumnIndex("address");
 
                 while (cursor.moveToNext()) {
-                    final PhoneNumber number = new PhoneNumber(cursor.getString(0));
+                    final PhoneNumber number = new PhoneNumber(cursor.getString(address_index));
                     final Optional<Contact> maybeContact = Iterables.tryFind(contacts, Contact.checkNumber(number));
 
                     if (maybeContact.isPresent()) {
@@ -70,8 +71,10 @@ public class MainActivity extends Activity {
         new Query<Void>(Uri.withAppendedPath(smsUri, "sent"), "address") {
             @Override
             protected Void ready(final Cursor cursor) {
+                final int address_index = cursor.getColumnIndex("address");
+
                 while (cursor.moveToNext()) {
-                    final PhoneNumber number = new PhoneNumber(cursor.getString(0));
+                    final PhoneNumber number = new PhoneNumber(cursor.getString(address_index));
                     final Optional<Contact> maybeContact = Iterables.tryFind(contacts, Contact.checkNumber(number));
 
                     if (maybeContact.isPresent()) {
@@ -97,11 +100,12 @@ public class MainActivity extends Activity {
                     Contacts.PHOTO_URI) {
                 @Override
                 protected Void ready(final Cursor cursor) {
+                    final int id_index = cursor.getColumnIndex(BaseColumns._ID);
+                    final int lookup_key_index = cursor.getColumnIndex(Contacts.LOOKUP_KEY);
+                    final int display_name_index = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
+                    final int photo_uri_index = cursor.getColumnIndex(Contacts.PHOTO_URI);
+
                     if (cursor.moveToNext()) {
-                        final int id_index = cursor.getColumnIndex(BaseColumns._ID);
-                        final int lookup_key_index = cursor.getColumnIndex(Contacts.LOOKUP_KEY);
-                        final int display_name_index = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
-                        final int photo_uri_index = cursor.getColumnIndex(Contacts.PHOTO_ID);
 
                         contacts.remove(contact);
 

@@ -56,6 +56,11 @@ public class Contact implements Comparable<Contact> {
     private String display_name;
 
     /**
+     * Uri to this contact's page in the address book.
+     */
+    private Uri contactUri;
+
+    /**
      * The phone number.
      */
     protected final PhoneNumber number;
@@ -76,24 +81,19 @@ public class Contact implements Comparable<Contact> {
     private Integer total;
 
     /**
+     * The uri to the contact's photo
+     */
+    private Uri photo_uri;
+
+    /**
      * The percentage of messages that used this contact.
      */
     private double percentage;
 
     /**
-     * The uri to the contact's photo
-     */
-    private Uri photo;
-
-    /**
      * The scale of the bar
      */
     private double barScale;
-
-    /**
-     * Uri to this contact's page in the address book.
-     */
-    private Uri contactUri;
 
     /**
      * Instantiates a new contact.
@@ -110,13 +110,6 @@ public class Contact implements Comparable<Contact> {
     }
 
     /**
-     * @param contactUri Uri to this contact's page in the address book
-     */
-    public void setContactUri(final Uri contactUri) {
-        this.contactUri = contactUri;
-    }
-
-    /**
      * Set the display name of the contact.
      * 
      * @param display_name the display name
@@ -126,11 +119,34 @@ public class Contact implements Comparable<Contact> {
     }
 
     /**
+     * @param contactUri Uri to this contact's page in the address book
+     */
+    public void setContactUri(final Uri contactUri) {
+        this.contactUri = contactUri;
+    }
+
+    /**
+     * Increments the count of incomings by one.
+     */
+    public void incrIncomingCount() {
+        this.incoming++;
+        this.total++;
+    }
+
+    /**
+     * Increments the count of outgoings by one.
+     */
+    public void incrOutgoingCount() {
+        this.outgoing++;
+        this.total++;
+    }
+
+    /**
      * @param photo the uri to the contact's photo
      */
     public void setPhoto(final Optional<String> photo) {
         if (photo.isPresent()) {
-            this.photo = Uri.parse(photo.get());
+            this.photo_uri = Uri.parse(photo.get());
         }
     }
 
@@ -151,40 +167,10 @@ public class Contact implements Comparable<Contact> {
     }
 
     /**
-     * Increments the count of incomings by one.
-     */
-    public void incrIncomingCount() {
-        this.incoming++;
-        this.total++;
-    }
-
-    /**
-     * Increments the count of outgoings by one.
-     */
-    public void incrOutgoingCount() {
-        this.outgoing++;
-        this.total++;
-    }
-
-    /**
-     * @return this contact's photo
-     */
-    public Uri getPhoto() {
-        return this.photo;
-    }
-
-    /**
      * @return the raw format of the phone number
      */
     public String getRawPhoneNumber() {
         return this.number.toRaw();
-    }
-
-    /**
-     * @return the total
-     */
-    public int getTotal() {
-        return this.total;
     }
 
     /**
@@ -199,6 +185,20 @@ public class Contact implements Comparable<Contact> {
      */
     public int getOutgoing() {
         return this.outgoing;
+    }
+
+    /**
+     * @return the total
+     */
+    public int getTotal() {
+        return this.total;
+    }
+
+    /**
+     * @return this contact's photo
+     */
+    public Uri getPhoto() {
+        return this.photo_uri;
     }
 
     /**
@@ -226,12 +226,13 @@ public class Contact implements Comparable<Contact> {
     @Override
     public String toString() {
         return Objects.toStringHelper("")
-                .add("contact_uri", this.contactUri)
+                .omitNullValues()
                 .add("display_name", this.display_name == null ? UNKNOWN : this.display_name)
-                .add("photo", this.photo)
+                .add("contact_uri", this.contactUri)
                 .add("phone_number", this.number)
                 .add("incoming", this.incoming)
                 .add("outgoing", this.outgoing)
+                .add("photo", this.photo_uri)
                 .add("percentage", String.format(Locale.CANADA, "%2.1f%%", this.percentage))
                 .add("bar_scale", this.barScale).toString();
     }
