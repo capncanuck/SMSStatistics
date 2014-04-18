@@ -91,6 +91,11 @@ public class Contact implements Comparable<Contact> {
     private double barScale;
 
     /**
+     * Uri to this contact's page in the address book.
+     */
+    private Uri contactUri;
+
+    /**
      * Instantiates a new contact.
      *
      * @param number the phone number
@@ -102,6 +107,47 @@ public class Contact implements Comparable<Contact> {
         this.incoming = incoming;
         this.outgoing = outgoing;
         this.total = this.incoming + this.outgoing;
+    }
+
+    /**
+     * @param contactUri Uri to this contact's page in the address book
+     */
+    public void setContactUri(final Uri contactUri) {
+        this.contactUri = contactUri;
+    }
+
+    /**
+     * Set the display name of the contact.
+     * 
+     * @param display_name the display name
+     */
+    public void setName(final String display_name) {
+        this.display_name = display_name;
+    }
+
+    /**
+     * @param photo the uri to the contact's photo
+     */
+    public void setPhoto(final Optional<String> photo) {
+        if (photo.isPresent()) {
+            this.photo = Uri.parse(photo.get());
+        }
+    }
+
+    /**
+     * @param population the total number of messages
+     */
+    public void setPercentage(final int population) {
+        this.percentage = 100.0 * this.total / population;
+    }
+
+    /**
+     * Scale the bar length by the the greatest bar length
+     * 
+     * @param greatest the greatest bar length
+     */
+    public void setBarScale(final int greatest) {
+        this.barScale = (double) this.total / greatest;
     }
 
     /**
@@ -121,31 +167,6 @@ public class Contact implements Comparable<Contact> {
     }
 
     /**
-     * Set the display name of the contact.
-     * 
-     * @param display_name the display name
-     */
-    public void setName(final String display_name) {
-        this.display_name = display_name;
-    }
-
-    /**
-     * @param population the total number of messages
-     */
-    public void setPercentage(final int population) {
-        this.percentage = 100.0 * this.total / population;
-    }
-
-    /**
-     * @param photo the uri to the contact's photo
-     */
-    public void setPhoto(final Optional<String> photo) {
-        if (photo.isPresent()) {
-            this.photo = Uri.parse(photo.get());
-        }
-    }
-
-    /**
      * @return this contact's photo
      */
     public Uri getPhoto() {
@@ -155,7 +176,7 @@ public class Contact implements Comparable<Contact> {
     /**
      * @return the raw format of the phone number
      */
-    public String getRawNumber() {
+    public String getRawPhoneNumber() {
         return this.number.toRaw();
     }
 
@@ -205,21 +226,13 @@ public class Contact implements Comparable<Contact> {
     @Override
     public String toString() {
         return Objects.toStringHelper("")
+                .add("contact_uri", this.contactUri)
                 .add("display_name", this.display_name == null ? UNKNOWN : this.display_name)
+                .add("photo", this.photo)
                 .add("phone_number", this.number)
                 .add("incoming", this.incoming)
                 .add("outgoing", this.outgoing)
                 .add("percentage", String.format(Locale.CANADA, "%2.1f%%", this.percentage))
-                .add("photo", this.photo)
                 .add("bar_scale", this.barScale).toString();
-    }
-
-    /**
-     * Scale the bar length by the the greatest bar length
-     * 
-     * @param greatest the greatest bar length
-     */
-    public void setBarScale(final int greatest) {
-        this.barScale = (double) this.total / greatest;
     }
 }

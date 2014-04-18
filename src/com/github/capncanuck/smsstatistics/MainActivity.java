@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.method.ScrollingMovementMethod;
@@ -89,15 +90,25 @@ public class MainActivity extends Activity {
 
         // Update the contact list with display names
         for (final Contact contact : contacts) {
-            new Query<Void>(Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(contact.getRawNumber())),
+            new Query<Void>(Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(contact.getRawPhoneNumber())),
+                    BaseColumns._ID,
+                    Contacts.LOOKUP_KEY,
                     Contacts.DISPLAY_NAME,
                     Contacts.PHOTO_URI) {
                 @Override
                 protected Void ready(final Cursor cursor) {
                     if (cursor.moveToNext()) {
+                        final int id_index = cursor.getColumnIndex(BaseColumns._ID);
+                        final int lookup_key_index = cursor.getColumnIndex(Contacts.LOOKUP_KEY);
+                        final int display_name_index = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
+                        final int photo_uri_index = cursor.getColumnIndex(Contacts.PHOTO_ID);
+
                         contacts.remove(contact);
-                        contact.setName(cursor.getString(0));
-                        contact.setPhoto(Optional.fromNullable(cursor.getString(1)));
+
+                        contact.setContactUri(Contacts.getLookupUri(cursor.getLong(id_index), cursor.getString(lookup_key_index)));
+                        contact.setName(cursor.getString(display_name_index));
+                        contact.setPhoto(Optional.fromNullable(cursor.getString(photo_uri_index)));
+
                         contacts.add(contact);
                     }
 
