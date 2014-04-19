@@ -56,9 +56,9 @@ public class Contact implements Comparable<Contact> {
     private String display_name;
 
     /**
-     * Uri to this contact's page in the address book.
+     * Uri to this contact's profile in the address book.
      */
-    private Uri contactUri;
+    private Uri profileLink;
 
     /**
      * The phone number.
@@ -119,10 +119,10 @@ public class Contact implements Comparable<Contact> {
     }
 
     /**
-     * @param contactUri Uri to this contact's page in the address book
+     * @param profileLink Uri to this contact's profile in the address book
      */
-    public void setContactUri(final Uri contactUri) {
-        this.contactUri = contactUri;
+    public void setProfileLink(final Uri profileLink) {
+        this.profileLink = profileLink;
     }
 
     /**
@@ -164,6 +164,13 @@ public class Contact implements Comparable<Contact> {
      */
     public void setBarScale(final int greatest) {
         this.barScale = (double) this.total / greatest;
+    }
+
+    /**
+     * @return Uri to this contact's profile in the address book.
+     */
+    public Uri getProfileLink() {
+        return this.profileLink;
     }
 
     /**
@@ -228,7 +235,7 @@ public class Contact implements Comparable<Contact> {
         return Objects.toStringHelper("")
                 .omitNullValues()
                 .add("display_name", this.display_name == null ? UNKNOWN : this.display_name)
-                .add("contact_uri", this.contactUri)
+                .add("contact_uri", this.profileLink)
                 .add("phone_number", this.number)
                 .add("incoming", this.incoming)
                 .add("outgoing", this.outgoing)

@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 
                         contacts.remove(contact);
 
-                        contact.setContactUri(Contacts.getLookupUri(cursor.getLong(id_index), cursor.getString(lookup_key_index)));
+                        contact.setProfileLink(Contacts.getLookupUri(cursor.getLong(id_index), cursor.getString(lookup_key_index)));
                         contact.setName(cursor.getString(display_name_index));
                         contact.setPhoto(Optional.fromNullable(cursor.getString(photo_uri_index)));
 
