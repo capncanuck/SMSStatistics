@@ -3,14 +3,14 @@ package com.github.capncanuck.smsstatistics.contacts;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.provider.ContactsContract.Contacts;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.github.capncanuck.smsstatistics.R;
 
@@ -35,7 +35,7 @@ public class ContactList extends ArrayAdapter<Contact> {
     private final List<Contact> contacts;
 
     /**
-     * The activity in which the contact list is shown
+     * The activity in which the contact list is shown.
      */
     private final Context ctx;
 
@@ -82,9 +82,24 @@ public class ContactList extends ArrayAdapter<Contact> {
         }
 
         // set the photo onclick to profile
-        final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(contact.getProfileLink(), Contacts.CONTENT_ITEM_TYPE);
-        photoView.setOnClickListener(new ClickPhoto(this.ctx, intent));
+        photoView.setOnClickListener(contact.getProfileLinkListener(this.ctx));
+
+        // set the display name
+        final TextView display_name = (TextView) rowView.findViewById(R.id.display_name);
+        display_name.setText(contact.getDisplayName());
+
+        // set the percentage
+        final TextView percentage = (TextView) rowView.findViewById(R.id.percentage);
+        percentage.setText(contact.getPercentage());
+
+        // set the progress bar
+        final ProgressBar percentage_bar = (ProgressBar) rowView.findViewById(R.id.percentage_bar);
+        percentage_bar.setProgress(contact.getIncomingBar());
+        percentage_bar.setSecondaryProgress(contact.getOutgoingBar());
+
+        // set the phone number
+        final TextView phone_number = (TextView) rowView.findViewById(R.id.phone_number);
+        phone_number.setText(contact.getPhoneNumber());
 
         return rowView;
     }

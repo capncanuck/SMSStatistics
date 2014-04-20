@@ -2,7 +2,11 @@ package com.github.capncanuck.smsstatistics.contacts;
 
 import java.util.Locale;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.provider.ContactsContract.Contacts;
+import android.view.View.OnClickListener;
 
 import com.github.capncanuck.smsstatistics.PhoneNumber;
 import com.google.common.base.Objects;
@@ -167,10 +171,18 @@ public class Contact implements Comparable<Contact> {
     }
 
     /**
-     * @return Uri to this contact's profile in the address book.
+     * @return this contact's display name
      */
-    public Uri getProfileLink() {
-        return this.profileLink;
+    public CharSequence getDisplayName() {
+        return this.display_name == null ? UNKNOWN : this.display_name;
+    }
+
+    /**
+     * @param ctx where the click will happen
+     * @return OnClickListener when clicked, the contact's profile opens
+     */
+    public OnClickListener getProfileLinkListener(final Context ctx) {
+        return new ClickPhoto(ctx, new Intent(Intent.ACTION_VIEW).setDataAndType(this.profileLink, Contacts.CONTENT_ITEM_TYPE));
     }
 
     /**
@@ -181,6 +193,13 @@ public class Contact implements Comparable<Contact> {
     }
 
     /**
+     * @return the contact's phone number
+     */
+    public String getPhoneNumber() {
+        return this.number.toString();
+    }
+
+    /**
      * @return the total number of incoming messages
      */
     public int getIncoming() {
@@ -188,10 +207,24 @@ public class Contact implements Comparable<Contact> {
     }
 
     /**
+     * @return the length of the incoming bar
+     */
+    public int getIncomingBar() {
+        return (int) Math.round(100 * this.barScale / this.total * this.incoming);
+    }
+
+    /**
      * @return the total number of outgoing messages
      */
     public int getOutgoing() {
         return this.outgoing;
+    }
+
+    /**
+     * @return the length of the outgoing bar
+     */
+    public int getOutgoingBar() {
+        return (int) Math.round(100 * this.barScale / this.total * (this.incoming + this.outgoing));
     }
 
     /**
@@ -206,6 +239,13 @@ public class Contact implements Comparable<Contact> {
      */
     public Uri getPhoto() {
         return this.photo_uri;
+    }
+
+    /**
+     * @return how often this contact has been contacted
+     */
+    public CharSequence getPercentage() {
+        return String.format(Locale.CANADA, "%2.1f%%", this.percentage);
     }
 
     /**
@@ -234,13 +274,12 @@ public class Contact implements Comparable<Contact> {
     public String toString() {
         return Objects.toStringHelper("")
                 .omitNullValues()
-                .add("display_name", this.display_name == null ? UNKNOWN : this.display_name)
+                .add("display_name", this.getDisplayName())
                 .add("contact_uri", this.profileLink)
                 .add("phone_number", this.number)
                 .add("incoming", this.incoming)
                 .add("outgoing", this.outgoing)
                 .add("photo", this.photo_uri)
-                .add("percentage", String.format(Locale.CANADA, "%2.1f%%", this.percentage))
-                .add("bar_scale", this.barScale).toString();
+                .add("percentage", this.getPercentage()).toString();
     }
 }
