@@ -2,8 +2,9 @@
 <resources>
 
     <string name="app_name">SMS Statistics</string>
-    <string name="total_blank">TOTAL: INCOMING, OUTGOING MESSAGES</string>
-    <string name="total">TOTAL: %1$d INCOMING, %2$d OUTGOING MESSAGES</string>
+    <string name="spinnerTitle">Retrieving Contacts</string>
     <string name="blank_photo">blank photo</string>
+    <string name="total_blank">TOTAL: 0 INCOMING, 0 OUTGOING MESSAGES</string>
+    <string name="total">TOTAL: %1$d INCOMING, %2$d OUTGOING MESSAGES</string>
     
 </resources>
