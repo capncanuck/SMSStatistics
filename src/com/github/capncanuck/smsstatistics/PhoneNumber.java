@@ -70,7 +70,7 @@ public class PhoneNumber implements Comparable<PhoneNumber> {
         } else {
             this.formatted = this.raw;
             this.country_code = null;
-            this.body = null;
+            this.body = this.raw;
         }
     }
 

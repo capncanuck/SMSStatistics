@@ -42,7 +42,7 @@ public class AsyncGetContacts extends AsyncTask<Void, CharSequence, Set<Contact>
     public AsyncGetContacts(final Activity aty) {
         this.aty = aty;
 
-        // Create the progress bar
+        // create the progress bar
         this.spinner = new ProgressDialog(aty);
         this.spinner.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         this.spinner.setTitle(R.string.spinnerTitle);
@@ -50,7 +50,7 @@ public class AsyncGetContacts extends AsyncTask<Void, CharSequence, Set<Contact>
         this.spinner.setCancelable(false);
         this.spinner.setCanceledOnTouchOutside(false);
 
-        // Setup the querier
+        // set-up the querier
         Query.setAty(this.aty);
     }
 
